@@ -1,0 +1,377 @@
+object MainForm: TMainForm
+  Left = 503
+  Height = 508
+  Top = 126
+  Width = 660
+  BorderStyle = bsSingle
+  Caption = 'Операци над матрицами'
+  ClientHeight = 508
+  ClientWidth = 660
+  OnDestroy = FormDestroy
+  LCLVersion = '1.6.0.4'
+  object PageControl1: TPageControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 289
+    Top = 0
+    Width = 660
+    ActivePage = TabSheet1
+    Anchors = [akTop, akLeft, akRight]
+    TabIndex = 0
+    TabOrder = 0
+    OnChange = PageControl1Change
+    object TabSheet1: TTabSheet
+      Caption = 'Умножение'
+      ClientHeight = 261
+      ClientWidth = 652
+      object eM1R: TSpinEdit
+        AnchorSideLeft.Control = TabSheet1
+        AnchorSideTop.Control = TabSheet1
+        Left = 4
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 4
+        BorderSpacing.Top = 4
+        MinValue = 1
+        OnChange = eM1RChange
+        TabOrder = 0
+        Value = 2
+      end
+      object eM1C: TSpinEdit
+        AnchorSideLeft.Control = eM1R
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = eM1R
+        Left = 62
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 8
+        MinValue = 1
+        OnChange = eM1CChange
+        TabOrder = 1
+        Value = 2
+      end
+      object M1: TStringGrid
+        AnchorSideLeft.Control = eM1R
+        AnchorSideTop.Control = eM1R
+        AnchorSideTop.Side = asrBottom
+        Left = 4
+        Height = 142
+        Top = 35
+        Width = 173
+        BorderSpacing.Top = 8
+        ColCount = 2
+        DefaultColWidth = 32
+        FixedCols = 0
+        FixedRows = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goSmoothScroll]
+        RowCount = 2
+        TabOrder = 2
+        OnValidateEntry = MValidateEntry
+      end
+      object Copy1: TButton
+        AnchorSideLeft.Control = eM1R
+        AnchorSideTop.Control = M1
+        AnchorSideTop.Side = asrBottom
+        Left = 4
+        Height = 25
+        Top = 185
+        Width = 75
+        BorderSpacing.Top = 8
+        Caption = 'Копировать'
+        OnClick = CopyClick
+        TabOrder = 3
+      end
+      object Paste1: TButton
+        AnchorSideLeft.Control = Copy1
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Copy1
+        Left = 87
+        Height = 25
+        Top = 185
+        Width = 75
+        BorderSpacing.Left = 8
+        Caption = 'Вставить'
+        OnClick = PasteClick
+        TabOrder = 4
+      end
+      object eM2R: TSpinEdit
+        AnchorSideLeft.Control = TabSheet1
+        AnchorSideTop.Control = TabSheet1
+        Left = 237
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 237
+        BorderSpacing.Top = 4
+        Enabled = False
+        MinValue = 1
+        TabOrder = 5
+        Value = 2
+      end
+      object eM2C: TSpinEdit
+        AnchorSideLeft.Control = eM2R
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = eM2R
+        Left = 295
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 8
+        MinValue = 1
+        OnChange = eM2CChange
+        TabOrder = 6
+        Value = 2
+      end
+      object M2: TStringGrid
+        AnchorSideLeft.Control = eM2R
+        AnchorSideTop.Control = eM2R
+        AnchorSideTop.Side = asrBottom
+        Left = 237
+        Height = 142
+        Top = 35
+        Width = 173
+        BorderSpacing.Top = 8
+        ColCount = 2
+        DefaultColWidth = 32
+        FixedCols = 0
+        FixedRows = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goSmoothScroll]
+        RowCount = 2
+        TabOrder = 7
+        OnValidateEntry = MValidateEntry
+      end
+      object Copy2: TButton
+        AnchorSideLeft.Control = eM2R
+        AnchorSideTop.Control = M2
+        AnchorSideTop.Side = asrBottom
+        Left = 237
+        Height = 25
+        Top = 185
+        Width = 75
+        BorderSpacing.Top = 8
+        Caption = 'Копировать'
+        OnClick = CopyClick
+        TabOrder = 8
+      end
+      object Paste2: TButton
+        AnchorSideLeft.Control = Copy2
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Copy2
+        Left = 320
+        Height = 25
+        Top = 185
+        Width = 75
+        BorderSpacing.Left = 8
+        Caption = 'Вставить'
+        OnClick = PasteClick
+        TabOrder = 9
+      end
+      object eM3R: TSpinEdit
+        AnchorSideLeft.Control = eM2R
+        AnchorSideTop.Control = TabSheet1
+        Left = 474
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 237
+        BorderSpacing.Top = 4
+        Enabled = False
+        MinValue = 1
+        TabOrder = 10
+        Value = 2
+      end
+      object eM3C: TSpinEdit
+        AnchorSideLeft.Control = eM3R
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = eM3R
+        Left = 532
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 8
+        Enabled = False
+        MinValue = 1
+        TabOrder = 11
+        Value = 2
+      end
+      object M3: TStringGrid
+        AnchorSideLeft.Control = eM3R
+        AnchorSideTop.Control = eM3R
+        AnchorSideTop.Side = asrBottom
+        Left = 474
+        Height = 142
+        Top = 35
+        Width = 173
+        BorderSpacing.Top = 8
+        ColCount = 2
+        DefaultColWidth = 32
+        FixedCols = 0
+        FixedRows = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goSmoothScroll]
+        RowCount = 2
+        TabOrder = 12
+        OnValidateEntry = MValidateEntry
+      end
+      object Copy3: TButton
+        AnchorSideLeft.Control = eM3R
+        AnchorSideTop.Control = M3
+        AnchorSideTop.Side = asrBottom
+        Left = 474
+        Height = 25
+        Top = 185
+        Width = 75
+        BorderSpacing.Top = 8
+        Caption = 'Копировать'
+        OnClick = CopyClick
+        TabOrder = 13
+      end
+      object Paste3: TButton
+        AnchorSideLeft.Control = Copy3
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Copy3
+        Left = 557
+        Height = 25
+        Top = 185
+        Width = 75
+        BorderSpacing.Left = 8
+        Caption = 'Вставить'
+        OnClick = PasteClick
+        TabOrder = 14
+      end
+      object Calculate: TBitBtn
+        AnchorSideLeft.Control = M2
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = M2
+        AnchorSideTop.Side = asrCenter
+        Left = 422
+        Height = 28
+        Top = 92
+        Width = 36
+        BorderSpacing.Left = 12
+        Caption = '='
+        OnClick = CalculateClick
+        TabOrder = 15
+      end
+      object StaticText1: TStaticText
+        AnchorSideLeft.Control = M1
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = M1
+        AnchorSideTop.Side = asrCenter
+        Left = 189
+        Height = 62
+        Top = 75
+        Width = 24
+        BorderSpacing.Left = 12
+        Caption = '*'
+        Font.Height = -53
+        ParentFont = False
+        TabOrder = 16
+      end
+      object Clear1: TButton
+        AnchorSideLeft.Control = Copy1
+        AnchorSideTop.Control = Copy1
+        AnchorSideTop.Side = asrBottom
+        Left = 4
+        Height = 25
+        Top = 214
+        Width = 75
+        BorderSpacing.Top = 4
+        Caption = 'Очистить'
+        OnClick = ClearClick
+        TabOrder = 17
+      end
+      object Clear2: TButton
+        AnchorSideLeft.Control = Copy2
+        AnchorSideTop.Control = Clear1
+        Left = 237
+        Height = 25
+        Top = 214
+        Width = 75
+        Caption = 'Очистить'
+        OnClick = ClearClick
+        TabOrder = 18
+      end
+      object Clear3: TButton
+        AnchorSideLeft.Control = Copy3
+        AnchorSideTop.Control = Clear1
+        Left = 474
+        Height = 25
+        Top = 214
+        Width = 75
+        Caption = 'Очистить'
+        OnClick = ClearClick
+        TabOrder = 19
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Детерминант'
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Ступ. вид'
+    end
+  end
+  object BufferGrid: TStringGrid
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = PageControl1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 203
+    Top = 297
+    Width = 292
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    ColCount = 3
+    DefaultColWidth = 96
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goSelectionActive]
+    RowCount = 1
+    TabOrder = 1
+    Cells = (
+      3
+      0
+      0
+      'Имя'
+      1
+      0
+      'Строк'
+      2
+      0
+      'Столбцов'
+    )
+  end
+  object DeleteSelected: TButton
+    AnchorSideLeft.Control = ClearGrid
+    AnchorSideBottom.Control = ClearGrid
+    Left = 308
+    Height = 25
+    Top = 446
+    Width = 124
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Bottom = 4
+    Caption = 'Удалить выбранную'
+    OnClick = DeleteSelectedClick
+    TabOrder = 2
+  end
+  object ClearGrid: TButton
+    AnchorSideLeft.Control = BufferGrid
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideBottom.Control = BufferGrid
+    AnchorSideBottom.Side = asrBottom
+    Left = 308
+    Height = 25
+    Top = 475
+    Width = 124
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Left = 8
+    Caption = 'Очистить'
+    OnClick = ClearGridClick
+    TabOrder = 3
+  end
+end
