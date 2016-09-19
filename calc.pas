@@ -30,6 +30,9 @@ type
   end;
 
 function MultMatrix(a, b: tMatrix): tMatrix;
+function SumMatrix(a, b: tMatrix): tMatrix;
+function InvertMatrix(a: tMatrix): tMatrix;
+function TransponMatrix(a: tMatrix): tMatrix;
 
 implementation
 
@@ -50,6 +53,49 @@ begin
       for k:= 0 to a.Col - 1 do
         M[i,j]+= a.M[i,k] * b.M[k,j];
     end;
+  end;
+end;
+
+function SumMatrix(a, b: tMatrix): tMatrix;
+var
+  i, j, k: word;
+begin
+  Result:= tMatrix.Create(a.Row, a.Col);
+  with Result do
+  begin
+  for i:= 0 to Row - 1 do
+    for j:= 0 to Col - 1 do
+    begin
+      M[i,j]:= a.M[i,j] + b.M[i,j];
+    end;
+  end;
+end;
+
+function InvertMatrix(a: tMatrix): tMatrix;
+var
+  i, j: integer;
+begin
+  Result:= a;
+  with Result do
+  begin
+  for i:= 0 to Row - 1 do
+    for j:= 0 to Col - 1 do
+    begin
+      M[i,j]:= - M[i,j];
+    end;
+  end;
+end;
+
+function TransponMatrix(a: tMatrix): tMatrix;
+var
+  i, j: integer;
+begin
+  Result:= tMatrix.Create(a.Col, a.Row);
+  with Result do
+  begin
+    for i:= 0 to Row - 1 do
+      for j:= 0 to Col - 1 do
+        M[i,j]:= a.M[j,i];
   end;
 end;
 

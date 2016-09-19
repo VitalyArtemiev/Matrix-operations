@@ -49,3 +49,6 @@ Temporary Items
 lib
 *.exe
 *.bak
+*.dbg
+unit1.lfm.bak
+*.bak
