@@ -1184,9 +1184,10 @@ object MainForm: TMainForm
     ColCount = 3
     DefaultColWidth = 96
     FixedCols = 0
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goSelectionActive]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goRowSelect, goSmoothScroll, goSelectionActive]
     RowCount = 1
     TabOrder = 1
+    OnValidateEntry = BufferGridValidateEntry
     Cells = (
       3
       0

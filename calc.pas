@@ -50,7 +50,7 @@ function MultMatrix(a, b: tMatrix): tMatrix;
 var
   i, j, k: word;
 begin
-  Result:= tMatrix.Create(a.Row, b.Col);
+  Result:= tMatrix.Create(a.Row, b.Col);  //change to Strassen algorithm
   with Result do
   begin
   for i:= 0 to Row - 1 do
@@ -81,7 +81,7 @@ end;
 procedure LUDecompose(a: tMatrix; out u, l: tMatrix);
 var
   i, j, k: integer;
-  s, t: single;
+  s: single;
 begin
   u:= tMatrix.Create(a.Row, a.Col);
   l:= tMatrix.Create(a.Row, a.Col);

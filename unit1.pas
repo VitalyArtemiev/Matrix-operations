@@ -101,6 +101,8 @@ type
     tStair: TTabSheet;
     tPow: TTabSheet;
     tSum: TTabSheet;
+    procedure BufferGridValidateEntry(sender: TObject; aCol, aRow: Integer;
+      const OldValue: string; var NewValue: String);
     procedure CalculateDetClick(Sender: TObject);
     procedure CalculateMultClick(Sender: TObject);
     procedure CalculatePowClick(Sender: TObject);
@@ -339,6 +341,13 @@ begin
   Det.Caption:= FloatToStrf(Result, ffFixed, 0, d);
 
   a.Destroy;
+end;
+
+procedure TMainForm.BufferGridValidateEntry(sender: TObject; aCol,
+  aRow: Integer; const OldValue: string; var NewValue: String);
+begin
+  if aCol > 0 then
+    NewValue:= OldValue;
 end;
 
 procedure TMainForm.CalculatePowClick(Sender: TObject);
