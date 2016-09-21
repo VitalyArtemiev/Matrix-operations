@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 503
+  Left = 411
   Height = 472
-  Top = 126
+  Top = 366
   Width = 594
   BorderStyle = bsSingle
   Caption = 'Операци над матрицами'
@@ -1044,7 +1044,7 @@ object MainForm: TMainForm
         BorderSpacing.Left = 4
         BorderSpacing.Top = 4
         MinValue = 1
-        OnChange = eM4RChange
+        OnChange = eM6RChange
         TabOrder = 0
         Value = 2
       end
@@ -1145,7 +1145,7 @@ object MainForm: TMainForm
         Width = 24
         BorderSpacing.Left = 12
         Caption = '='
-        OnClick = CalculatePowClick
+        OnClick = CalculateDetClick
         TabOrder = 7
       end
       object Det: TStaticText
@@ -1153,11 +1153,15 @@ object MainForm: TMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = M6
         AnchorSideTop.Side = asrCenter
+        AnchorSideRight.Control = tDet
+        AnchorSideRight.Side = asrBottom
         Left = 308
         Height = 78
         Top = 58
-        Width = 244
+        Width = 270
+        Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 16
+        BorderSpacing.Right = 8
         Font.Height = -53
         ParentFont = False
         TabOrder = 8

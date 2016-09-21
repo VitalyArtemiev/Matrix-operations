@@ -101,6 +101,7 @@ type
     tStair: TTabSheet;
     tPow: TTabSheet;
     tSum: TTabSheet;
+    procedure CalculateDetClick(Sender: TObject);
     procedure CalculateMultClick(Sender: TObject);
     procedure CalculatePowClick(Sender: TObject);
     procedure CalculateSumClick(Sender: TObject);
@@ -116,6 +117,7 @@ type
     procedure eM1RChange(Sender: TObject);
     procedure eM2CChange(Sender: TObject);
     procedure eM4RChange(Sender: TObject);
+    procedure eM6RChange(Sender: TObject);
     procedure eM7CChange(Sender: TObject);
     procedure eM7RChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -225,7 +227,10 @@ begin
       begin
         CompleteMatrix(M10);
       end;
-    TabDet: ;
+    TabDet:
+      begin
+        CompleteMatrix(M6);
+      end;
     TabStair: ;
   end;
 end;
@@ -317,6 +322,25 @@ begin
   c.Destroy;
 end;
 
+procedure TMainForm.CalculateDetClick(Sender: TObject);
+var
+  a: tMatrix;
+  Result: single;
+  d: integer;
+begin
+  CompleteMatrices;
+  a:= tMatrix.Create(M6);
+
+  Result:= DetMatrix(a);
+  if frac(Result) = 0 then
+    d:= 0
+    else
+      d:= 4;
+  Det.Caption:= FloatToStrf(Result, ffFixed, 0, d);
+
+  a.Destroy;
+end;
+
 procedure TMainForm.CalculatePowClick(Sender: TObject);
 var
   a, c: tMatrix;
@@ -405,6 +429,14 @@ begin
   M4.ColCount:= eM4R.Value;
   M5.RowCount:= eM4R.Value;
   M5.ColCount:= eM4R.Value;
+end;
+
+procedure TMainForm.eM6RChange(Sender: TObject);
+begin
+  eM6C.Value:= eM6R.Value;
+
+  M6.RowCount:= eM6R.Value;
+  M6.ColCount:= eM6R.Value;
 end;
 
 procedure TMainForm.eM7CChange(Sender: TObject);
