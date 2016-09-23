@@ -3,6 +3,7 @@ object MainForm: TMainForm
   Height = 472
   Top = 366
   Width = 594
+  BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Операци над матрицами'
   ClientHeight = 472
@@ -20,11 +21,10 @@ object MainForm: TMainForm
     Height = 252
     Top = 0
     Width = 594
-    ActivePage = tSum
+    ActivePage = tLin
     Anchors = [akTop, akLeft, akRight]
-    TabIndex = 0
+    TabIndex = 5
     TabOrder = 0
-    OnChange = PagesChange
     object tSum: TTabSheet
       Caption = 'Сумма'
       ClientHeight = 224
@@ -104,7 +104,7 @@ object MainForm: TMainForm
       object eM8R: TSpinEdit
         AnchorSideLeft.Control = OpChoice
         AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = tMult
+        AnchorSideTop.Control = tSum
         Left = 211
         Height = 23
         Top = 4
@@ -176,7 +176,7 @@ object MainForm: TMainForm
       object eM9R: TSpinEdit
         AnchorSideLeft.Control = CalculateSum
         AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = tMult
+        AnchorSideTop.Control = tSum
         Left = 419
         Height = 23
         Top = 4
@@ -967,6 +967,7 @@ object MainForm: TMainForm
       object eM11C: TSpinEdit
         AnchorSideLeft.Control = eM11R
         AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = eM11R
         Left = 310
         Height = 23
         Top = 4
@@ -1165,6 +1166,126 @@ object MainForm: TMainForm
         Font.Height = -53
         ParentFont = False
         TabOrder = 8
+      end
+    end
+    object tLin: TTabSheet
+      Caption = 'Лин. система'
+      ClientHeight = 224
+      ClientWidth = 586
+      object eM12R: TSpinEdit
+        AnchorSideLeft.Control = tLin
+        AnchorSideTop.Control = tLin
+        Left = 4
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 4
+        BorderSpacing.Top = 4
+        MinValue = 1
+        OnChange = eM12RChange
+        TabOrder = 0
+        Value = 2
+      end
+      object eM12C: TSpinEdit
+        AnchorSideLeft.Control = eM12R
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = eM12R
+        Left = 62
+        Height = 23
+        Top = 4
+        Width = 50
+        BorderSpacing.Left = 8
+        MinValue = 1
+        TabOrder = 1
+        Value = 3
+      end
+      object M12: TStringGrid
+        AnchorSideLeft.Control = eM12R
+        AnchorSideTop.Control = eM12R
+        AnchorSideTop.Side = asrBottom
+        Left = 4
+        Height = 124
+        Top = 35
+        Width = 164
+        BorderSpacing.Top = 8
+        ColCount = 3
+        DefaultColWidth = 32
+        FixedCols = 0
+        FixedRows = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goSmoothScroll]
+        RowCount = 2
+        TabOrder = 2
+        OnValidateEntry = MValidateEntry
+      end
+      object Copy12: TButton
+        AnchorSideLeft.Control = eM12R
+        AnchorSideTop.Control = M12
+        AnchorSideTop.Side = asrBottom
+        Left = 4
+        Height = 25
+        Top = 167
+        Width = 75
+        BorderSpacing.Top = 8
+        Caption = 'Копировать'
+        OnClick = CopyClick
+        TabOrder = 3
+      end
+      object Paste12: TButton
+        AnchorSideLeft.Control = Copy12
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Copy12
+        Left = 87
+        Height = 25
+        Top = 167
+        Width = 75
+        BorderSpacing.Left = 8
+        Caption = 'Вставить'
+        OnClick = PasteClick
+        TabOrder = 4
+      end
+      object Clear12: TButton
+        AnchorSideLeft.Control = Copy12
+        AnchorSideTop.Control = Copy12
+        AnchorSideTop.Side = asrBottom
+        Left = 4
+        Height = 25
+        Top = 196
+        Width = 75
+        BorderSpacing.Top = 4
+        Caption = 'Очистить'
+        OnClick = ClearClick
+        TabOrder = 5
+      end
+      object Solution: TMemo
+        AnchorSideLeft.Control = CalculateLin
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = eM12R
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = tLin
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = Paste12
+        Left = 244
+        Height = 141
+        Top = 27
+        Width = 334
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 10
+        BorderSpacing.Right = 8
+        TabOrder = 6
+      end
+      object CalculateLin: TButton
+        AnchorSideLeft.Control = M12
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = M12
+        AnchorSideTop.Side = asrCenter
+        Left = 178
+        Height = 25
+        Top = 85
+        Width = 56
+        BorderSpacing.Left = 10
+        Caption = 'Решить'
+        OnClick = CalculateLinClick
+        TabOrder = 7
       end
     end
     object tStair: TTabSheet

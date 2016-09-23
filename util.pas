@@ -8,7 +8,7 @@ uses
   Classes, SysUtils;
 
 function strf(a: integer): string;
-function strf(a: single): string;
+function strf(a: double): string;
 
 implementation
 
@@ -17,9 +17,12 @@ begin
   str(a, Result);
 end;
 
-function strf(a: single): string;
+function strf(a: double): string;
 begin
-  str(a, Result);
+  if frac(a) = 0 then
+    str(trunc(a), Result)
+  else
+    str(a:0:6, Result);
 end;
 
 end.

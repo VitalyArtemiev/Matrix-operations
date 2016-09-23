@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Grids;
 
 type
-  s2a = array of array of single;
+  d2a = array of array of double;
 
   { tMatrix }
 
@@ -16,19 +16,21 @@ type
   private
     fCol: word;
     fRow: word;
-    M: s2a;
-    function getM(i, j: integer): single;
+    M: d2a;
+    function getM(i, j: integer): double;
     procedure SetCol(AValue: word);
-    procedure setM(i, j: integer; AValue: single);
+    procedure setM(i, j: integer; AValue: double);
     procedure SetRow(AValue: word);
-    procedure Print;
+
   public
-    property pM[i, j: integer]: single read getM write setM; default;
+    property pM[i, j: integer]: double read getM write setM; default;
     property Col: word read fCol write SetCol;
     property Row: word read fRow write SetRow;
 
     procedure SwapRow(r1, r2: integer);
     procedure PasteToGrid(G: tStringGrid);
+    function Copy: tMatrix;
+    procedure Print;
 
     constructor Create(G: tStringGrid);
     constructor Create(R, C: word);
@@ -37,7 +39,7 @@ type
 
 function MultMatrix(a, b: tMatrix): tMatrix;
 function SumMatrix(a, b: tMatrix): tMatrix;
-function DetMatrix(a: tMatrix): single;
+function DetMatrix(m: tMatrix): double;
 function InvertMatrix(a: tMatrix): tMatrix;
 function TransponMatrix(a: tMatrix): tMatrix;
 
@@ -81,7 +83,7 @@ end;
 procedure LUDecompose(a: tMatrix; out u, l: tMatrix);
 var
   i, j, k: integer;
-  s: single;
+  s: double;
 begin
   u:= tMatrix.Create(a.Row, a.Col);
   l:= tMatrix.Create(a.Row, a.Col);
@@ -129,14 +131,17 @@ begin
   l.PasteToGrid(MainForm.M2);}
 end;
 
-function DetMatrix(a: tMatrix): single;
+function DetMatrix(m: tMatrix): double;
 var
   i, j, k: integer;
-  s: single;
+  s: double;
+  a: tMatrix;
 begin
-  for i:= 0 to a.Row - 1 do
+  a:= m.Copy;
+
+  for i:= 0 to a.Col - 1 do   //this ignores extra rows
   begin
-    for j:= i to a.Row - 1 do
+    for j:= i to a.Col - 1 do
     begin
       s:= 0;
       for k:= 0 to i-1 do
@@ -144,7 +149,7 @@ begin
       a[i,j]:= a[i,j] - s;
     end;
 
-    for j:= i + 1 to a.Row - 1 do
+    for j:= i + 1 to a.Col - 1 do
     begin
       s:= 0;
       for k:= 0 to i-1 do
@@ -161,6 +166,7 @@ begin
 
   for i:= 0 to a.Col - 1 do
     Result*= a.M[i,i];
+  a.Destroy;
 end;
 
 function InvertMatrix(a: tMatrix): tMatrix;
@@ -200,12 +206,12 @@ begin
   setlength(M, fRow, fCol);
 end;
 
-procedure tMatrix.setM(i, j: integer; AValue: single);
+procedure tMatrix.setM(i, j: integer; AValue: double);
 begin
   M[i,j]:= AValue;
 end;
 
-function tMatrix.getM(i, j: integer): single;
+function tMatrix.getM(i, j: integer): double;
 begin
   Result:= M[i,j];
 end;
@@ -235,20 +241,20 @@ end;
 
 procedure tMatrix.SwapRow(r1, r2: integer);
 var
-  a: array of single;
-  i: integer;
+  a: array of double;
+  //i: integer;
 begin
-  writeln('swap start');
-  Print;
+  //writeln('swap start');
+ // Print;
 
   a:= M[r2];
   M[r2]:= M[r1];
   M[r1]:= a;
-  for i:= 0 to Col - 1 do
-  M[r1, i]*= -1; //change sign so to not change det
+  {for i:= 0 to Col - 1 do
+  M[r1, i]*= -1; //change sign so to not change det  }
 
-  writeln('swap stop');
-  Print;
+  //writeln('swap stop');
+  //Print;
 end;
 
 procedure tMatrix.PasteToGrid(G: tStringGrid);
@@ -268,11 +274,21 @@ begin
     end;
 end;
 
+function tMatrix.Copy: tMatrix;
+var
+  i, j: integer;
+begin
+  Result:= tMatrix.Create(Row, Col);
+  for i:= 0 to Row - 1 do
+    for j:= 0 to Col - 1 do
+      Result[i,j]:= M[i,j]
+end;
+
 constructor tMatrix.Create(G: tStringGrid);
 var
   i, j, e: integer;
   s: string;
-  a: single;
+  a: double;
 begin
   fRow:= G.RowCount;
   fCol:= G.ColCount;
@@ -284,7 +300,7 @@ begin
       s:= G.Cells[j,i]; //tstringgrid inverted
       val(s, a, e);
       if e<>0 then
-        raise Exception.Create('invalid value');
+        raise Exception.Create('invalid value' + s);
       M[i,j]:= a;
     end;
 end;

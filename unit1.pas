@@ -13,12 +13,14 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    CalculateLin: TButton;
     CalculateTranspon: TBitBtn;
     CalculateSum: TBitBtn;
     CalculatePow: TBitBtn;
     CalculateDet: TBitBtn;
     Clear10: TButton;
     Clear11: TButton;
+    Clear12: TButton;
     Clear4: TButton;
     Clear5: TButton;
     Clear6: TButton;
@@ -27,6 +29,7 @@ type
     Clear9: TButton;
     Copy10: TButton;
     Copy11: TButton;
+    Copy12: TButton;
     Copy4: TButton;
     Copy5: TButton;
     Copy6: TButton;
@@ -44,6 +47,8 @@ type
     eM11R: TSpinEdit;
     eM10C: TSpinEdit;
     eM10R: TSpinEdit;
+    eM12C: TSpinEdit;
+    eM12R: TSpinEdit;
     eM7C: TSpinEdit;
     eM7R: TSpinEdit;
     eM8C: TSpinEdit;
@@ -58,13 +63,16 @@ type
     eM5R: TSpinEdit;
     M10: TStringGrid;
     M11: TStringGrid;
+    M12: TStringGrid;
     M5: TStringGrid;
     M6: TStringGrid;
     M7: TStringGrid;
     M8: TStringGrid;
     M9: TStringGrid;
+    Solution: TMemo;
     Paste10: TButton;
     Paste11: TButton;
+    Paste12: TButton;
     Paste5: TButton;
     Paste6: TButton;
     Paste7: TButton;
@@ -96,6 +104,7 @@ type
     Det: TStaticText;
     StaticText4: TStaticText;
     CalcTranspon: TTabSheet;
+    tLin: TTabSheet;
     tMult: TTabSheet;
     tDet: TTabSheet;
     tStair: TTabSheet;
@@ -104,6 +113,7 @@ type
     procedure BufferGridValidateEntry(sender: TObject; aCol, aRow: Integer;
       const OldValue: string; var NewValue: String);
     procedure CalculateDetClick(Sender: TObject);
+    procedure CalculateLinClick(Sender: TObject);
     procedure CalculateMultClick(Sender: TObject);
     procedure CalculatePowClick(Sender: TObject);
     procedure CalculateSumClick(Sender: TObject);
@@ -114,6 +124,7 @@ type
     procedure DeleteSelectedClick(Sender: TObject);
     procedure eM10CChange(Sender: TObject);
     procedure eM10RChange(Sender: TObject);
+    procedure eM12RChange(Sender: TObject);
 
     procedure eM1CChange(Sender: TObject);
     procedure eM1RChange(Sender: TObject);
@@ -125,7 +136,6 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure MValidateEntry(sender: TObject; aCol, aRow: Integer;
       const OldValue: string; var NewValue: String);
-    procedure PagesChange(Sender: TObject);
     procedure PasteClick(Sender: TObject);
   private
     { private declarations }
@@ -141,7 +151,8 @@ var
 
 implementation
 
-uses util, strutils;
+uses
+  util, strutils;
 
 const
   TabSum = 0;
@@ -149,11 +160,19 @@ const
   TabPow = 2;
   TabTranspon = 3;
   TabDet = 4;
-  TabStair = 5;
+  TabLin = 5;
+  TabStair = 6;
 
   ColName = 0;
   ColRows = 1;
   ColCols = 2;
+
+  LDS  = 'Система линейно зависима';
+  LIDS = 'Система линейно независима';
+  Dst  = 'D = ';
+
+  IDLine = 0;
+  DLine  = 1;
 
 {$R *.lfm}
 
@@ -180,6 +199,7 @@ begin
       'Paste9': Buffer[BufferGrid.Row - 1].PasteToGrid(M9);
       'Paste10': Buffer[BufferGrid.Row - 1].PasteToGrid(M10);
       'Paste11': Buffer[BufferGrid.Row - 1].PasteToGrid(M11);
+      'Paste12': Buffer[BufferGrid.Row - 1].PasteToGrid(M12);
     end;
   except
     on E: Exception do
@@ -233,6 +253,10 @@ begin
       begin
         CompleteMatrix(M6);
       end;
+    TabLin:
+      begin
+        CompleteMatrix(M12);
+      end;
     TabStair: ;
   end;
 end;
@@ -260,6 +284,7 @@ begin
     'Copy9': Buffer[high(Buffer)]:= tMatrix.Create(M9);
     'Copy10': Buffer[high(Buffer)]:= tMatrix.Create(M10);
     'Copy11': Buffer[high(Buffer)]:= tMatrix.Create(M11);
+    'Copy12': Buffer[high(Buffer)]:= tMatrix.Create(M12);
   end;
   BufferGrid.RowCount:= BufferGrid.RowCount + 1;
   BufferGrid.Cells[ColName, BufferGrid.RowCount - 1]:= 'Матрица' + strf(BufferGrid.RowCount - 1);
@@ -299,6 +324,13 @@ begin
   M11.ColCount:= eM10R.Value;
 end;
 
+procedure TMainForm.eM12RChange(Sender: TObject);
+begin
+  eM12C.Value:= eM12R.Value + 1;
+  M12.RowCount:= eM12R.Value;
+  M12.ColCount:= eM12C.Value;
+end;
+
 procedure TMainForm.ClearGridClick(Sender: TObject);
 var
   i: Integer;
@@ -327,7 +359,7 @@ end;
 procedure TMainForm.CalculateDetClick(Sender: TObject);
 var
   a: tMatrix;
-  Result: single;
+  Result: double;
   d: integer;
 begin
   CompleteMatrices;
@@ -341,6 +373,56 @@ begin
   Det.Caption:= FloatToStrf(Result, ffFixed, 0, d);
 
   a.Destroy;
+end;
+
+procedure TMainForm.CalculateLinClick(Sender: TObject);
+var
+  a, b: tMatrix;
+  i, k: integer;
+  d: double;
+  ds: array of double;
+begin
+  Solution.Clear;
+  CompleteMatrices;
+  a:= tMatrix.Create(M12);
+  b:= TransponMatrix(a);
+  a.Destroy;
+
+  d:= DetMatrix(b);
+  if d = 0 then
+  begin
+    Solution.Lines[IDLine]:= LDS;
+    Solution.Lines[DLine]:= Dst + '0';
+    exit
+  end;
+
+  setlength(ds, b.Row - 1);
+
+  for k:= 0 to b.Row - 2 do
+  begin
+    b.SwapRow(k, b.Row - 1);
+    ds[k]:= DetMatrix(b);
+    b.SwapRow(k, b.Row - 1);
+  end;
+
+  with Solution do
+  begin
+    Solution.Lines[IDLine]:= LIDS;
+    Lines[DLine]:= DSt + strf(d);
+    for i:= 1 to length(ds) do
+    begin
+      Lines[DLine + i]:= 'D' + strf(i) + ' = ' + strf(ds[i-1]);
+    end;
+    Lines[DLine + i + 1]:= '========';
+    for i:= 1 to length(ds) do //2 cycles bcos tmemo concats empty strings
+    begin
+      Lines[DLine + b.Row + i]:= 'x' + strf(i) + ' = '
+                                        + strf(ds[i-1]/d);
+     // writeln(ds[i-1], '/', d, '=', ds[i-1]/d);
+    end;
+  end;
+
+  b.Destroy;
 end;
 
 procedure TMainForm.BufferGridValidateEntry(sender: TObject; aCol,
@@ -386,7 +468,6 @@ end;
 procedure TMainForm.CalculateTransponClick(Sender: TObject);
 var
   a, c: tMatrix;
-  i: integer;
 begin
   CompleteMatrices;
   a:= tMatrix.Create(M10);
@@ -411,6 +492,7 @@ begin
     'Clear9': M9.Clean;
     'Clear10': M10.Clean;
     'Clear11': M11.Clean;
+    'Clear12': M12.Clean;
   end;
 end;
 
@@ -481,16 +563,11 @@ procedure TMainForm.MValidateEntry(sender: TObject; aCol, aRow: Integer;
   const OldValue: string; var NewValue: String);
 var
   e: integer;
-  a: single;
+  a: double;
 begin
   val(NewValue, a, e);
   if e <> 0 then
     NewValue:= '';
-end;
-
-procedure TMainForm.PagesChange(Sender: TObject);
-begin
-
 end;
 
 end.
